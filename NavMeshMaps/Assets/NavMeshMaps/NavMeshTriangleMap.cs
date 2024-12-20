@@ -23,14 +23,11 @@ namespace NavMeshMaps
             public float length;
         }
 
-        public int AreaMask { get; set; }
-
         private List<Polygon> _polygons = new List<Polygon>();
         private List<Connection> _connections = new List<Connection>();
 
         private void Awake()
         {
-            AreaMask = 1 << NavMesh.GetAreaFromName("Walkable");
             if (_buildOnAwake)
             {
                 Build();
@@ -39,6 +36,8 @@ namespace NavMeshMaps
 
         public void Build()
         {
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             _polygons.Clear();
             _connections.Clear();
 
@@ -57,39 +56,31 @@ namespace NavMeshMaps
             }
 
             // Calculate connections
-            var raycastHeight = 0.5f;
-            var raycastLayerMask = 1 << LayerMask.NameToLayer("Default");
             var polygonCount = _polygons.Count;
             for (int i = 0; i < polygonCount; i++)
             {
                 var currentPoly = _polygons[i];
-                var currentPolyHead = currentPoly.center + Vector3.up * raycastHeight;
                 for (int j = i + 1; j < polygonCount; j++)
                 {
                     var targetPoly = _polygons[j];
-                    if (GetSameCount(currentPoly.vertices, targetPoly.vertices) == 0)
+                    if (GetSameCount(currentPoly.vertices, targetPoly.vertices) < 1)
                     {
                         continue;
                     }
 
-                    var targetPolyHead = targetPoly.center + Vector3.up * raycastHeight;
-                    if (!NavMesh.Raycast(currentPoly.center, targetPoly.center, out _, AreaMask)
-                        && !Physics.Raycast(currentPolyHead, (targetPolyHead - currentPolyHead).normalized, (targetPolyHead - currentPolyHead).magnitude, raycastLayerMask))
+                    var length = Vector3.Distance(currentPoly.center, targetPoly.center);
+                    _connections.Add(new Connection
                     {
-                        var length = Vector3.Distance(currentPoly.center, targetPoly.center);
-                        _connections.Add(new Connection
-                        {
-                            from = i,
-                            to = j,
-                            length = length,
-                        });
-                        _connections.Add(new Connection
-                        {
-                            from = j,
-                            to = i,
-                            length = length,
-                        });
-                    }
+                        from = i,
+                        to = j,
+                        length = length,
+                    });
+                    _connections.Add(new Connection
+                    {
+                        from = j,
+                        to = i,
+                        length = length,
+                    });
                 }
             }
 
@@ -107,7 +98,7 @@ namespace NavMeshMaps
                 _polygons[i].connections = connectionBuffer.ToArray();
             }
 
-            Debug.Log($"Polygons: {_polygons.Count}, Connections: {_connections.Count}");
+            Debug.Log($"Polygons: {_polygons.Count}, Connections: {_connections.Count}, Elapsed: {stopwatch.ElapsedMilliseconds}ms");
         }
 
         private int GetSameCount(Vector3[] verts1, Vector3[] verts2)

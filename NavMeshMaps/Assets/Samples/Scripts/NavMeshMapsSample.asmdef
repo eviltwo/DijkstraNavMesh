@@ -1,0 +1,17 @@
+{
+    "name": "NavMeshMapsSample",
+    "rootNamespace": "NavMeshMapsSample",
+    "references": [
+        "GUID:368f8d02671be104f80b38c90c8aa2ca",
+        "GUID:0aa441395b7c97e4b992ccb1ff359264"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
