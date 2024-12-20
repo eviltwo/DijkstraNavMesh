@@ -111,7 +111,7 @@ namespace NavMeshMaps.Extensions
                 for (int i = 0; i < _nodes.Length; i++)
                 {
                     _nodes[i].isFixed = false;
-                    _nodes[i].distance = float.MaxValue;
+                    _nodes[i].distance = float.PositiveInfinity;
                     _nodes[i].previousNode = -1;
                 }
             }
