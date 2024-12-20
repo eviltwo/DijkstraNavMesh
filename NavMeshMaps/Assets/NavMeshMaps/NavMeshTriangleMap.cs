@@ -6,6 +6,9 @@ namespace NavMeshMaps
 {
     public class NavMeshTriangleMap : MonoBehaviour
     {
+        [SerializeField]
+        private bool _buildOnAwake = true;
+
         public class Polygon
         {
             public Vector3[] vertices;
@@ -28,6 +31,10 @@ namespace NavMeshMaps
         private void Awake()
         {
             AreaMask = 1 << NavMesh.GetAreaFromName("Walkable");
+            if (_buildOnAwake)
+            {
+                Build();
+            }
         }
 
         public void Build()
