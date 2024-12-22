@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace DijkstraNavMesh
 {
+    /// <summary>
+    /// This is a class that converts a NavMesh into a graph for use with Dijkstra's algorithm and stores it.
+    /// Place only one in the scene.
+    /// </summary>
     public class DijkstraGraphContainer : MonoBehaviour
     {
         [SerializeField]

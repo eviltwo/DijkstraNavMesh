@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace DijkstraNavMesh
 {
+    /// <summary>
+    /// This is a class that calculates the cost of each node using Dijkstra's algorithm.  
+    /// Attach this component to each object that will serve as a goal for Dijkstra's algorithm.
+    /// </summary>
     public class DijkstraCostGraphContainer : MonoBehaviour
     {
         [SerializeField]
