@@ -1,0 +1,17 @@
+{
+    "name": "com.eviltwo.dijkstra-navmesh",
+    "displayName": "DijkstraNavMesh",
+    "version": "1.0.0",
+    "unity": "6000.0",
+    "description": "This is a package for running Dijkstra's algorithm with Unity's NavMesh. It is optimized for scenes where many objects move toward a few targets.",
+    "author": {
+        "name": "DAIKI(eviltwo)",
+        "url": "https://github.com/eviltwo"
+    },
+
+    "keywords": [
+    ],
+
+    "dependencies": {
+    }
+}
