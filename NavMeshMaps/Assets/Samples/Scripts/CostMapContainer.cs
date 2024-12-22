@@ -9,6 +9,12 @@ namespace NavMeshMapsSample
         [SerializeField]
         private NavMeshTriangleMap _map = null;
 
+        [SerializeField]
+        private int _topLayerIteration = 50;
+
+        [SerializeField]
+        private int _subLayerIteration = 10;
+
         private CostMap _costMap;
         public CostMap CostMap => _costMap;
 
@@ -19,6 +25,8 @@ namespace NavMeshMapsSample
 
         private void Update()
         {
+            _costMap.TopLayerIteration = _topLayerIteration;
+            _costMap.SubLayerIteration = _subLayerIteration;
             var closestIndex = _costMap.GetClosestNodeIndex(transform.position);
             if (closestIndex >= 0)
             {

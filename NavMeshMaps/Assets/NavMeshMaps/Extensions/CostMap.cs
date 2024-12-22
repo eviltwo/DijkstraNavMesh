@@ -7,27 +7,28 @@ namespace NavMeshMaps.Extensions
 {
     public class CostMap
     {
-        private const int ItrLimit = 100000;
         private readonly CostLayer _topLayer;
         private readonly CostLayer[] _subLayers;
         private int _editSubLayerIndex = 0;
         private int _stableSubLayerIndex = 1;
         private bool _subLayerInitialized;
 
-        public int SubLayerIteration = 10;
-
         private readonly Graph _graph;
 
         public int NodeCount => _graph.Nodes.Count;
 
+        public int TopLayerIteration { get; set; } = 50;
+
+        public int SubLayerIteration { get; set; } = 10;
+
         public CostMap(NavMeshTriangleMap navMeshTriangleMap)
         {
             _graph = new Graph(navMeshTriangleMap);
-            _topLayer = new CostLayer(_graph, 10f);
+            _topLayer = new CostLayer(_graph);
             _subLayers = new CostLayer[2];
             for (int i = 0; i < _subLayers.Length; i++)
             {
-                _subLayers[i] = new CostLayer(_graph, 999f);
+                _subLayers[i] = new CostLayer(_graph);
             }
         }
 
@@ -39,23 +40,19 @@ namespace NavMeshMaps.Extensions
                 editLayer.Setup(startNodeIndex);
                 var stableLayer = _subLayers[_stableSubLayerIndex];
                 stableLayer.Setup(startNodeIndex);
-                var itr = 0;
-                while (!stableLayer.IsFinished() && itr < ItrLimit)
-                {
-                    itr++;
-                    stableLayer.ForwardStep();
-                }
                 _subLayerInitialized = true;
             }
 
             // Top layer
             {
                 _topLayer.Setup(startNodeIndex);
-                var itr = 0;
-                while (!_topLayer.IsFinished() && itr < ItrLimit)
+                for (int i = 0; i < TopLayerIteration; i++)
                 {
-                    itr++;
                     _topLayer.ForwardStep();
+                    if (_topLayer.IsFinished())
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -63,11 +60,13 @@ namespace NavMeshMaps.Extensions
             {
                 // Forward step
                 var editLayer = _subLayers[_editSubLayerIndex];
-                var itr = 0;
-                while (!editLayer.IsFinished() && itr < SubLayerIteration)
+                for (int i = 0; i < SubLayerIteration; i++)
                 {
-                    itr++;
                     editLayer.ForwardStep();
+                    if (editLayer.IsFinished())
+                    {
+                        break;
+                    }
                 }
                 // Swap layers
                 if (editLayer.IsFinished())
@@ -273,11 +272,9 @@ namespace NavMeshMaps.Extensions
 
             private readonly Graph _graph;
             private readonly CostNode[] _costNodes;
-            private readonly float _maxCalcDistance;
-            public CostLayer(Graph graph, float maxCalcDistance)
+            public CostLayer(Graph graph)
             {
                 _graph = graph;
-                _maxCalcDistance = maxCalcDistance;
                 _costNodes = new CostNode[_graph.Nodes.Count];
                 for (int i = 0; i < _costNodes.Length; i++)
                 {
@@ -320,11 +317,6 @@ namespace NavMeshMaps.Extensions
                     var costNode = _costNodes[index];
                     _checkCostNodes.RemoveAt(0);
                     costNode.isFixed = true;
-
-                    if (costNode.cost > _maxCalcDistance)
-                    {
-                        return;
-                    }
 
                     var graphNode = _graph.Nodes[index];
                     for (int i = 0; i < graphNode.connections.Count; i++)
