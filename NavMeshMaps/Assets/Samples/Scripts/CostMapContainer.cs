@@ -35,7 +35,7 @@ namespace NavMeshMapsSample
         }
 
 #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (_costMap != null)
             {
