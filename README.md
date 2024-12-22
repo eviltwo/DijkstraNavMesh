@@ -1,5 +1,5 @@
 # Dijkstra NavMesh
-This is a package for running Dijkstra's algorithm with Unity's NavMesh.  
+This is a package for performing pathfinding using Dijkstra's algorithm with Unity's NavMesh.  
 It is optimized for scenes where many objects move toward a few targets.
 
 ![dijkstra-costs](https://github.com/user-attachments/assets/8c14608d-e86e-4e61-a2bd-e7080a68fc7f)
