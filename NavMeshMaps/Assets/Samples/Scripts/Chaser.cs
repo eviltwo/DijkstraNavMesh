@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using NavMeshMaps;
 using UnityEngine;
 
 namespace NavMeshMapsSample
 {
     public class Chaser : MonoBehaviour
     {
-        [SerializeField]
-        private NavMeshTriangleMap _map = null;
-
         [SerializeField]
         private CostMapContainer _distanceMapController = null;
 
@@ -17,29 +13,26 @@ namespace NavMeshMapsSample
 
         private bool _hasDestination;
         private Vector3 _destination;
-        private List<NavMeshTriangleMap.Triangle> _polygonBuffer = new List<NavMeshTriangleMap.Triangle>();
+        private List<int> _connectedNodeBuffer = new List<int>();
 
         private void Update()
         {
-            /*
             if (!_hasDestination)
             {
-                _polygonBuffer.Clear();
-                _map.GetPolygons(_polygonBuffer);
-                var currentIndex = NavMeshTriUtility.GetClosestPolygon(transform.position, _polygonBuffer);
-                var polygon = _polygonBuffer[currentIndex];
+                var currentIndex = _distanceMapController.CostMap.GetClosestNodeIndex(transform.position);
+                _distanceMapController.CostMap.GetConnectedNodes(currentIndex, _connectedNodeBuffer);
                 var minScore = float.MaxValue;
                 var minIndex = currentIndex;
-                foreach (var connection in polygon.connections)
+                foreach (var connectedNode in _connectedNodeBuffer)
                 {
-                    var score = _distanceMapController.DistanceMap.GetDistance(connection.triangleB);
+                    var score = _distanceMapController.CostMap.GetCost(connectedNode);
                     if (score < minScore)
                     {
                         minScore = score;
-                        minIndex = connection.triangleB;
+                        minIndex = connectedNode;
                     }
                 }
-                _destination = _map.GetPolygon(minIndex).center;
+                _destination = _distanceMapController.CostMap.GetPosition(minIndex);
                 _hasDestination = true;
             }
 
@@ -51,7 +44,6 @@ namespace NavMeshMapsSample
                     _hasDestination = false;
                 }
             }
-            */
         }
     }
 }

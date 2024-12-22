@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NavMeshMaps.UnityExtensions;
 using UnityEngine;
 
@@ -115,6 +116,12 @@ namespace NavMeshMaps.Extensions
             }
             var stableLayerNode = _subLayers[_stableSubLayerIndex].GetNode(index);
             return stableLayerNode.cost;
+        }
+
+        public void GetConnectedNodes(int node, List<int> results)
+        {
+            results.Clear();
+            results.AddRange(_graph.Nodes[node].connections.Select(v => v.toNode));
         }
 
         public void DrawGizmos()
