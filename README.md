@@ -6,7 +6,7 @@ It is optimized for scenes where many objects move toward a few targets.
 
 # UPM
 ```
-https://github.com/eviltwo/DijkstraNavMesh.git?path=src/DijkstraNavMesh/Assets/DijkstraNavMesh
+https://github.com/eviltwo/DijkstraNavMesh.git?path=DijkstraNavMesh/Assets/DijkstraNavMesh
 ```
 
 # Features
