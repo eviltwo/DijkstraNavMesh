@@ -10,17 +10,18 @@ namespace NavMeshMapsSample
         private NavMeshTriangleMap _map = null;
 
         [SerializeField]
-        private DistanceMapController _distanceMapController = null;
+        private CostMapContainer _distanceMapController = null;
 
         [SerializeField]
         private float _speed = 1.0f;
 
         private bool _hasDestination;
         private Vector3 _destination;
-        private List<NavMeshTriangleMap.Polygon> _polygonBuffer = new List<NavMeshTriangleMap.Polygon>();
+        private List<NavMeshTriangleMap.Triangle> _polygonBuffer = new List<NavMeshTriangleMap.Triangle>();
 
         private void Update()
         {
+            /*
             if (!_hasDestination)
             {
                 _polygonBuffer.Clear();
@@ -31,11 +32,11 @@ namespace NavMeshMapsSample
                 var minIndex = currentIndex;
                 foreach (var connection in polygon.connections)
                 {
-                    var score = _distanceMapController.DistanceMap.GetDistance(connection.to);
+                    var score = _distanceMapController.DistanceMap.GetDistance(connection.triangleB);
                     if (score < minScore)
                     {
                         minScore = score;
-                        minIndex = connection.to;
+                        minIndex = connection.triangleB;
                     }
                 }
                 _destination = _map.GetPolygon(minIndex).center;
@@ -50,6 +51,7 @@ namespace NavMeshMapsSample
                     _hasDestination = false;
                 }
             }
+            */
         }
     }
 }

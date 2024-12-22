@@ -130,7 +130,7 @@ namespace NavMeshMaps
                 triangle.triangleConnections = _triangleConnectionBuffer.ToArray();
             }
 
-            Debug.Log($"Polygons: {_triangles.Count}, Connections: {_triangleConnections.Count}, Elapsed: {stopwatch.ElapsedMilliseconds}ms");
+            Debug.Log($"Polygons: {_triangles.Count}, Connections: {_triangleConnections.Count}, Time: {stopwatch.ElapsedMilliseconds}ms");
         }
 
         private int CountSameValues(int[] values0, int[] values1)
