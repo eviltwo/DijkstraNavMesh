@@ -1,7 +1,9 @@
 {
     "name": "NavMeshMaps",
     "rootNamespace": "NavMeshMaps",
-    "references": [],
+    "references": [
+        "GUID:f5a2c1120ab0cdf44802c69636b5601c"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

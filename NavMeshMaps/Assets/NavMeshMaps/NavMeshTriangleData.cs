@@ -4,11 +4,8 @@ using UnityEngine.AI;
 
 namespace NavMeshMaps
 {
-    public class NavMeshTriangleMap : MonoBehaviour
+    public class NavMeshTriangleData
     {
-        [SerializeField]
-        private bool _buildOnAwake = true;
-
         private List<Vector3> _vertices = new List<Vector3>();
         public IReadOnlyList<Vector3> Vertices => _vertices;
 
@@ -34,14 +31,6 @@ namespace NavMeshMaps
 
         private List<int> _verticesTranslationBuffer = new List<int>();
         private List<int> _triangleConnectionBuffer = new List<int>();
-
-        private void Awake()
-        {
-            if (_buildOnAwake)
-            {
-                Build();
-            }
-        }
 
         public void Build()
         {
@@ -147,22 +136,6 @@ namespace NavMeshMaps
                 }
             }
             return count;
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            var color1 = new Color(0.0f, 0.0f, 1.0f);
-            var color2 = new Color(0.3f, 0.3f, 1.0f);
-            foreach (var connection in _triangleConnections)
-            {
-                Gizmos.color = connection.overlapedVertexCount >= 2 ? color1 : color2;
-                Gizmos.DrawLine(_triangles[connection.triangleA].center, _triangles[connection.triangleB].center);
-            }
-            Gizmos.color = color1;
-            foreach (var polygon in _triangles)
-            {
-                Gizmos.DrawSphere(polygon.center, 0.1f);
-            }
         }
     }
 }
