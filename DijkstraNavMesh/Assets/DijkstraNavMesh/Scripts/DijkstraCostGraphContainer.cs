@@ -9,26 +9,45 @@ namespace DijkstraNavMesh
     public class DijkstraCostGraphContainer : MonoBehaviour
     {
         [SerializeField]
-        private DijkstraGraphContainer _graphContainer = null;
+        public DijkstraGraphContainer GraphContainer = null;
 
         [SerializeField]
-        private int _topLayerIteration = 50;
+        public int TopLayerIteration = 50;
 
         [SerializeField]
-        private int _subLayerIteration = 10;
+        public int SubLayerIteration = 10;
+
+        private bool _initialized;
 
         private DijkstraCostGraph _costGraph;
         public DijkstraCostGraph CostGraph => _costGraph;
 
         private void Start()
         {
-            _costGraph = new DijkstraCostGraph(_graphContainer.Graph);
+            if (!_initialized)
+            {
+                Initialize();
+            }
+        }
+
+        public void Initialize()
+        {
+            if (GraphContainer != null)
+            {
+                _initialized = true;
+                _costGraph = new DijkstraCostGraph(GraphContainer.Graph);
+            }
         }
 
         private void Update()
         {
-            _costGraph.TopLayerIteration = _topLayerIteration;
-            _costGraph.SubLayerIteration = _subLayerIteration;
+            if (!_initialized)
+            {
+                return;
+            }
+
+            _costGraph.TopLayerIteration = TopLayerIteration;
+            _costGraph.SubLayerIteration = SubLayerIteration;
             var closestIndex = _costGraph.GetClosestNodeIndex(transform.position);
             if (closestIndex >= 0)
             {
