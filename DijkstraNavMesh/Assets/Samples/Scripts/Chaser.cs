@@ -12,9 +12,10 @@ namespace DijkstraNavMeshSample
         [SerializeField]
         public float Speed = 1.0f;
 
-        private bool _hasDestination;
-        private Vector3 _destination;
-        private List<int> _connectedNodeBuffer = new List<int>();
+        [SerializeField]
+        public int WaypointCount = 2;
+
+        private List<int> _waypoints = new List<int>();
 
         private void Update()
         {
@@ -23,31 +24,67 @@ namespace DijkstraNavMeshSample
                 return;
             }
 
-            if (!_hasDestination)
+            // Set first waypoint.
+            if (_waypoints.Count == 0)
             {
-                var currentIndex = CostGraphContainer.CostGraph.GetClosestNodeIndex(transform.position);
-                CostGraphContainer.CostGraph.GetConnectedNodes(currentIndex, _connectedNodeBuffer);
-                var minScore = float.MaxValue;
-                var minIndex = currentIndex;
-                foreach (var connectedNode in _connectedNodeBuffer)
+                var index = CostGraphContainer.CostGraph.GetClosestNodeIndex(transform.position);
+                _waypoints.Add(index);
+            }
+
+            // Add waypoints.
+            var requiredWaypointCount = Mathf.Max(WaypointCount - _waypoints.Count, 0);
+            for (int i = 0; i < requiredWaypointCount; i++)
+            {
+                var lastIndex = _waypoints[_waypoints.Count - 1];
+                var connections = CostGraphContainer.CostGraph.GetConnections(lastIndex);
+                var minScore = Vector3.Distance(transform.position, CostGraphContainer.CostGraph.GetPosition(lastIndex)) + CostGraphContainer.CostGraph.GetCost(lastIndex);
+                var minIndex = lastIndex;
+                foreach (var connection in connections)
                 {
-                    var score = CostGraphContainer.CostGraph.GetCost(connectedNode);
+                    var score = connection.length + CostGraphContainer.CostGraph.GetCost(connection.toNode);
                     if (score < minScore)
                     {
                         minScore = score;
-                        minIndex = connectedNode;
+                        minIndex = connection.toNode;
                     }
                 }
-                _destination = CostGraphContainer.CostGraph.GetPosition(minIndex);
-                _hasDestination = true;
+                if (minIndex == lastIndex)
+                {
+                    break;
+                }
+                _waypoints.Add(minIndex);
             }
 
-            if (_hasDestination)
+            // Move to destination.
+            if (_waypoints.Count > 0)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _destination, Speed * Time.deltaTime);
-                if (Vector3.SqrMagnitude(transform.position - _destination) < 0.1f)
+                var destinationIndex = _waypoints[0];
+                var destination = CostGraphContainer.CostGraph.GetPosition(destinationIndex);
+                transform.position = Vector3.MoveTowards(transform.position, destination, Speed * Time.deltaTime);
+                if (Vector3.SqrMagnitude(transform.position - destination) < 0.1f)
                 {
-                    _hasDestination = false;
+                    _waypoints.RemoveAt(0);
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (CostGraphContainer == null || _waypoints.Count == 0)
+            {
+                return;
+            }
+            Gizmos.color = Color.red;
+            var firstPosition = CostGraphContainer.CostGraph.GetPosition(_waypoints[0]);
+            Gizmos.DrawLine(transform.position, firstPosition);
+            for (int i = 0; i < _waypoints.Count; i++)
+            {
+                var position = CostGraphContainer.CostGraph.GetPosition(_waypoints[i]);
+                Gizmos.DrawSphere(position, 0.1f);
+                if (i > 0)
+                {
+                    var previousPosition = CostGraphContainer.CostGraph.GetPosition(_waypoints[i - 1]);
+                    Gizmos.DrawLine(previousPosition, position);
                 }
             }
         }

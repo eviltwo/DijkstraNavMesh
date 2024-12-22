@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &306502447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CostGraphContainer: {fileID: 1615204396}
   Speed: 1
+  WaypointCount: 5
 --- !u!23 &306502448
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &349956437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CostGraphContainer: {fileID: 1615204396}
   Speed: 1
+  WaypointCount: 5
 --- !u!23 &349956438
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -834,6 +836,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CostGraphContainer: {fileID: 1615204396}
   Speed: 1
+  WaypointCount: 5
 --- !u!23 &1023856702
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -920,7 +923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1342505711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CostGraphContainer: {fileID: 1615204396}
   Speed: 1
+  WaypointCount: 5
 --- !u!23 &1342505712
 MeshRenderer:
   m_ObjectHideFlags: 0

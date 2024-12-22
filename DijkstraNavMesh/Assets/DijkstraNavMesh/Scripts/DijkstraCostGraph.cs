@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using DijkstraNavMesh.UnityExtensions;
 using UnityEngine;
 
@@ -117,10 +116,9 @@ namespace DijkstraNavMesh
             return stableLayerNode.cost;
         }
 
-        public void GetConnectedNodes(int node, List<int> results)
+        public IReadOnlyList<DijkstraGraph.Connection> GetConnections(int node)
         {
-            results.Clear();
-            results.AddRange(_graph.Nodes[node].connections.Select(v => v.toNode));
+            return _graph.Nodes[node].connections;
         }
 
         public void DrawGizmos()
