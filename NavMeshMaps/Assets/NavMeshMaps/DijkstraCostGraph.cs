@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NavMeshMaps.Extensions
 {
-    public class CostMap
+    public class DijkstraCostGraph
     {
         private readonly CostLayer _topLayer;
         private readonly CostLayer[] _subLayers;
@@ -13,7 +13,7 @@ namespace NavMeshMaps.Extensions
         private int _stableSubLayerIndex = 1;
         private bool _subLayerInitialized;
 
-        private readonly Graph _graph;
+        private readonly DijkstraGraph _graph;
 
         public int NodeCount => _graph.Nodes.Count;
 
@@ -21,9 +21,9 @@ namespace NavMeshMaps.Extensions
 
         public int SubLayerIteration { get; set; } = 10;
 
-        public CostMap(NavMeshTriangleMap navMeshTriangleMap)
+        public DijkstraCostGraph(DijkstraGraph graph)
         {
-            _graph = new Graph(navMeshTriangleMap);
+            _graph = graph;
             _topLayer = new CostLayer(_graph);
             _subLayers = new CostLayer[2];
             for (int i = 0; i < _subLayers.Length; i++)
@@ -141,126 +141,6 @@ namespace NavMeshMaps.Extensions
             }
         }
 
-        private class Graph
-        {
-            public class Node
-            {
-                public Vector3 position;
-                public List<Connection> connections = new List<Connection>();
-            }
-
-            public class Connection
-            {
-                public int fromNode;
-                public int toNode;
-                public float length;
-            }
-
-            private readonly List<Node> _nodes = new List<Node>();
-            public IReadOnlyList<Node> Nodes => _nodes;
-
-            public Graph(NavMeshTriangleMap map)
-            {
-                var stopwatch = new System.Diagnostics.Stopwatch();
-                stopwatch.Start();
-
-                // Create nodes
-                var vertToNode = new int[map.Vertices.Count];
-                for (int i = 0; i < map.Vertices.Count; i++)
-                {
-                    var node = new Node
-                    {
-                        position = map.Vertices[i],
-                    };
-                    _nodes.Add(node);
-                    vertToNode[i] = _nodes.Count - 1;
-                }
-
-                var triToNode = new int[map.Triangles.Count];
-                for (int i = 0; i < map.Triangles.Count; i++)
-                {
-                    var tri = map.Triangles[i];
-                    var node = new Node
-                    {
-                        position = tri.center,
-                    };
-                    _nodes.Add(node);
-                    triToNode[i] = _nodes.Count - 1;
-                }
-
-                // Create connections
-                for (int i = 0; i < map.Triangles.Count; i++)
-                {
-                    var tri = map.Triangles[i];
-                    var centerNodeIdx = triToNode[i];
-                    var centerNode = _nodes[centerNodeIdx];
-                    for (int j = 0; j < tri.indices.Length; j++)
-                    {
-                        // Edge
-                        var fromNodeIdx = vertToNode[tri.indices[j]];
-                        var fromNode = _nodes[fromNodeIdx];
-                        var toNodeIdx = vertToNode[tri.indices[(j + 1) % tri.indices.Length]];
-                        var toNode = _nodes[toNodeIdx];
-                        var edgeLength = Vector3.Distance(fromNode.position, toNode.position);
-                        fromNode.connections.Add(new Connection
-                        {
-                            fromNode = fromNodeIdx,
-                            toNode = toNodeIdx,
-                            length = edgeLength,
-                        });
-                        toNode.connections.Add(new Connection
-                        {
-                            fromNode = toNodeIdx,
-                            toNode = fromNodeIdx,
-                            length = edgeLength,
-                        });
-                        // Center to vertex
-                        var vertLength = Vector3.Distance(centerNode.position, fromNode.position);
-                        centerNode.connections.Add(new Connection
-                        {
-                            fromNode = centerNodeIdx,
-                            toNode = fromNodeIdx,
-                            length = vertLength,
-                        });
-                        fromNode.connections.Add(new Connection
-                        {
-                            fromNode = fromNodeIdx,
-                            toNode = centerNodeIdx,
-                            length = vertLength,
-                        });
-                    }
-                }
-
-                for (int i = 0; i < map.TriangleConnections.Count; i++)
-                {
-                    var connection = map.TriangleConnections[i];
-                    if (connection.overlapedVertexCount < 2)
-                    {
-                        continue;
-                    }
-                    var fromNodeIdx = triToNode[connection.triangleA];
-                    var fromNode = _nodes[fromNodeIdx];
-                    var toNodeIdx = triToNode[connection.triangleB];
-                    var toNode = _nodes[toNodeIdx];
-                    var length = Vector3.Distance(fromNode.position, toNode.position);
-                    fromNode.connections.Add(new Connection
-                    {
-                        fromNode = fromNodeIdx,
-                        toNode = toNodeIdx,
-                        length = length,
-                    });
-                    toNode.connections.Add(new Connection
-                    {
-                        fromNode = toNodeIdx,
-                        toNode = fromNodeIdx,
-                        length = length,
-                    });
-                }
-
-                Debug.Log($"Nodes: {_nodes.Count}, Time: {stopwatch.ElapsedMilliseconds}ms");
-            }
-        }
-
         private class CostLayer
         {
             public class CostNode
@@ -270,9 +150,9 @@ namespace NavMeshMaps.Extensions
                 public int previousNode;
             }
 
-            private readonly Graph _graph;
+            private readonly DijkstraGraph _graph;
             private readonly CostNode[] _costNodes;
-            public CostLayer(Graph graph)
+            public CostLayer(DijkstraGraph graph)
             {
                 _graph = graph;
                 _costNodes = new CostNode[_graph.Nodes.Count];

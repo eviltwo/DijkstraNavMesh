@@ -7,7 +7,7 @@ namespace NavMeshMapsSample
     public class CostMapContainer : MonoBehaviour
     {
         [SerializeField]
-        private NavMeshTriangleMap _map = null;
+        private DijkstraGraphContainer _graphContainer = null;
 
         [SerializeField]
         private int _topLayerIteration = 50;
@@ -15,12 +15,12 @@ namespace NavMeshMapsSample
         [SerializeField]
         private int _subLayerIteration = 10;
 
-        private CostMap _costMap;
-        public CostMap CostMap => _costMap;
+        private DijkstraCostGraph _costMap;
+        public DijkstraCostGraph CostMap => _costMap;
 
         private void Start()
         {
-            _costMap = new CostMap(_map);
+            _costMap = new DijkstraCostGraph(_graphContainer.Graph);
         }
 
         private void Update()
