@@ -165,23 +165,4 @@ namespace NavMeshMaps
             }
         }
     }
-
-    public static class NavMeshTriUtility
-    {
-        public static int GetClosestPolygon(Vector3 position, IReadOnlyList<NavMeshTriangleMap.Triangle> polygons)
-        {
-            var minDist = float.MaxValue;
-            var minIndex = -1;
-            for (var i = 0; i < polygons.Count; i++)
-            {
-                var dist = Vector3.SqrMagnitude(position - polygons[i].center);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    minIndex = i;
-                }
-            }
-            return minIndex;
-        }
-    }
 }
