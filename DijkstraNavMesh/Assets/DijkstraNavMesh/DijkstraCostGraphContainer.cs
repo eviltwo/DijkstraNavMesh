@@ -1,7 +1,6 @@
-using DijkstraNavMesh;
 using UnityEngine;
 
-namespace DijkstraNavMeshSample
+namespace DijkstraNavMesh
 {
     public class DijkstraCostGraphContainer : MonoBehaviour
     {

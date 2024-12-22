@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DijkstraNavMesh;
 using UnityEngine;
 
 namespace DijkstraNavMeshSample
