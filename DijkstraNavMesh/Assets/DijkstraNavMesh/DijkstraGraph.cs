@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NavMeshMaps
+namespace DijkstraNavMesh
 {
     public class DijkstraGraph
     {

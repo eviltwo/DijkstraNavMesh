@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace NavMeshMaps
+namespace DijkstraNavMesh
 {
     public class NavMeshTriangleData
     {

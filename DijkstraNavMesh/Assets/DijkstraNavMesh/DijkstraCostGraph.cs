@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using NavMeshMaps.UnityExtensions;
+using DijkstraNavMesh.UnityExtensions;
 using UnityEngine;
 
-namespace NavMeshMaps.Extensions
+namespace DijkstraNavMesh
 {
     public class DijkstraCostGraph
     {

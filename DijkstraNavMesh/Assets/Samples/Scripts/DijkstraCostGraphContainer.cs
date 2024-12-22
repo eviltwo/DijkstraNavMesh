@@ -1,10 +1,9 @@
-using NavMeshMaps;
-using NavMeshMaps.Extensions;
+using DijkstraNavMesh;
 using UnityEngine;
 
-namespace NavMeshMapsSample
+namespace DijkstraNavMeshSample
 {
-    public class CostMapContainer : MonoBehaviour
+    public class DijkstraCostGraphContainer : MonoBehaviour
     {
         [SerializeField]
         private DijkstraGraphContainer _graphContainer = null;
@@ -15,35 +14,35 @@ namespace NavMeshMapsSample
         [SerializeField]
         private int _subLayerIteration = 10;
 
-        private DijkstraCostGraph _costMap;
-        public DijkstraCostGraph CostMap => _costMap;
+        private DijkstraCostGraph _costGraph;
+        public DijkstraCostGraph CostGraph => _costGraph;
 
         private void Start()
         {
-            _costMap = new DijkstraCostGraph(_graphContainer.Graph);
+            _costGraph = new DijkstraCostGraph(_graphContainer.Graph);
         }
 
         private void Update()
         {
-            _costMap.TopLayerIteration = _topLayerIteration;
-            _costMap.SubLayerIteration = _subLayerIteration;
-            var closestIndex = _costMap.GetClosestNodeIndex(transform.position);
+            _costGraph.TopLayerIteration = _topLayerIteration;
+            _costGraph.SubLayerIteration = _subLayerIteration;
+            var closestIndex = _costGraph.GetClosestNodeIndex(transform.position);
             if (closestIndex >= 0)
             {
-                _costMap.Update(closestIndex);
+                _costGraph.Update(closestIndex);
             }
         }
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
-            if (_costMap != null)
+            if (_costGraph != null)
             {
-                var count = _costMap.NodeCount;
+                var count = _costGraph.NodeCount;
                 for (int i = 0; i < count; i++)
                 {
-                    var position = _costMap.GetPosition(i);
-                    var distance = _costMap.GetCost(i);
+                    var position = _costGraph.GetPosition(i);
+                    var distance = _costGraph.GetCost(i);
                     var guistyle = new GUIStyle
                     {
                         fontSize = 10,
@@ -57,7 +56,7 @@ namespace NavMeshMapsSample
                 var cubeSize = Vector3.one * 0.02f;
                 for (int i = 0; i < count; i++)
                 {
-                    var position = _costMap.GetPosition(i);
+                    var position = _costGraph.GetPosition(i);
                     Gizmos.DrawCube(position, cubeSize);
                 }
             }

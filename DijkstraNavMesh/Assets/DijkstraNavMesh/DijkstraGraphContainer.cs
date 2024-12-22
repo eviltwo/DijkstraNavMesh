@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NavMeshMaps
+namespace DijkstraNavMesh
 {
     public class DijkstraGraphContainer : MonoBehaviour
     {

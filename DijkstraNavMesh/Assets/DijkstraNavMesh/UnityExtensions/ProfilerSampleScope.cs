@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.Profiling;
 
-namespace NavMeshMaps.UnityExtensions
+namespace DijkstraNavMesh.UnityExtensions
 {
     public class ProfilerSampleScope : IDisposable
     {
