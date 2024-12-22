@@ -6,7 +6,7 @@ namespace NavMeshMapsSample
     public class Chaser : MonoBehaviour
     {
         [SerializeField]
-        private CostMapContainer _distanceMapController = null;
+        private CostMapContainer _costMapContainer = null;
 
         [SerializeField]
         private float _speed = 1.0f;
@@ -19,20 +19,20 @@ namespace NavMeshMapsSample
         {
             if (!_hasDestination)
             {
-                var currentIndex = _distanceMapController.CostMap.GetClosestNodeIndex(transform.position);
-                _distanceMapController.CostMap.GetConnectedNodes(currentIndex, _connectedNodeBuffer);
+                var currentIndex = _costMapContainer.CostMap.GetClosestNodeIndex(transform.position);
+                _costMapContainer.CostMap.GetConnectedNodes(currentIndex, _connectedNodeBuffer);
                 var minScore = float.MaxValue;
                 var minIndex = currentIndex;
                 foreach (var connectedNode in _connectedNodeBuffer)
                 {
-                    var score = _distanceMapController.CostMap.GetCost(connectedNode);
+                    var score = _costMapContainer.CostMap.GetCost(connectedNode);
                     if (score < minScore)
                     {
                         minScore = score;
                         minIndex = connectedNode;
                     }
                 }
-                _destination = _distanceMapController.CostMap.GetPosition(minIndex);
+                _destination = _costMapContainer.CostMap.GetPosition(minIndex);
                 _hasDestination = true;
             }
 
