@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c750bacede74c04428ce92cc9468196b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _costMapContainer: {fileID: 1615204396}
+  _costGraphContainer: {fileID: 1615204396}
   _speed: 1
 --- !u!23 &306502448
 MeshRenderer:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c750bacede74c04428ce92cc9468196b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _costMapContainer: {fileID: 1615204396}
+  _costGraphContainer: {fileID: 1615204396}
   _speed: 1
 --- !u!23 &349956438
 MeshRenderer:
@@ -832,7 +832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c750bacede74c04428ce92cc9468196b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _costMapContainer: {fileID: 1615204396}
+  _costGraphContainer: {fileID: 1615204396}
   _speed: 1
 --- !u!23 &1023856702
 MeshRenderer:
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c750bacede74c04428ce92cc9468196b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _costMapContainer: {fileID: 1615204396}
+  _costGraphContainer: {fileID: 1615204396}
   _speed: 1
 --- !u!23 &1342505712
 MeshRenderer:

@@ -1,9 +1,8 @@
 {
-    "name": "NavMeshMapsSample",
-    "rootNamespace": "NavMeshMapsSample",
+    "name": "DijkstraNavMeshSample",
+    "rootNamespace": "DijkstraNavMeshSample",
     "references": [
-        "GUID:368f8d02671be104f80b38c90c8aa2ca",
-        "GUID:0aa441395b7c97e4b992ccb1ff359264"
+        "GUID:368f8d02671be104f80b38c90c8aa2ca"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
