@@ -1,2 +1,2 @@
-# NavMeshMaps
+# Dijkstra NavMesh
  
