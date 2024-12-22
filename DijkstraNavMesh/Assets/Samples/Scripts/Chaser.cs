@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DijkstraNavMesh;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace DijkstraNavMeshSample
 {
@@ -14,6 +15,9 @@ namespace DijkstraNavMeshSample
 
         [SerializeField]
         public int WaypointCount = 2;
+
+        [SerializeField]
+        public bool AllowSkipWaypoint = true;
 
         private List<int> _waypoints = new List<int>();
 
@@ -66,9 +70,21 @@ namespace DijkstraNavMeshSample
                     _waypoints.RemoveAt(0);
                 }
             }
+
+            // Skip waypoint if possible.
+            if (AllowSkipWaypoint && _waypoints.Count > 1)
+            {
+                var nextIndex = _waypoints[1];
+                var nextPosition = CostGraphContainer.CostGraph.GetPosition(nextIndex);
+                var layerMask = 1 << NavMesh.GetAreaFromName("Walkable");
+                if (!NavMesh.Raycast(transform.position, nextPosition, out _, layerMask))
+                {
+                    _waypoints.RemoveAt(0);
+                }
+            }
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (CostGraphContainer == null || _waypoints.Count == 0)
             {
